@@ -2,7 +2,7 @@
 
 @import "tailwindcss";
 
-@theme {
+:root {
   --font-family-sans: 'Heebo', system-ui, sans-serif;
 
   --color-primary-50: #eff6ff;
