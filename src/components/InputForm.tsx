@@ -1,6 +1,7 @@
 import { Calendar, Car, Trash2 } from 'lucide-react';
 import type { DriverData, LicenseType } from '../types';
 import { LICENSE_TYPES } from '../utils/constants';
+import { useTheme } from '../hooks/useTheme';
 
 interface InputFormProps {
   data: DriverData;
@@ -9,6 +10,8 @@ interface InputFormProps {
 }
 
 export function InputForm({ data, onChange, onClear }: InputFormProps) {
+  const { isDark } = useTheme();
+
   const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange({ ...data, birthDate: e.target.value });
   };
@@ -29,19 +32,30 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
 
   const today = new Date().toISOString().split('T')[0];
 
+  const inputClass = `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+    isDark
+      ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
+      : 'bg-gray-50 border-gray-300 text-gray-800'
+  }`;
+
+  const labelClass = `block text-sm font-medium mb-2 transition-colors ${
+    isDark ? 'text-slate-300' : 'text-gray-700'
+  }`;
+
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-      <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+    <div className={`rounded-2xl shadow-lg p-6 mb-6 transition-colors duration-300 ${
+      isDark ? 'bg-slate-800' : 'bg-white'
+    }`}>
+      <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 transition-colors ${
+        isDark ? 'text-white' : 'text-gray-800'
+      }`}>
         <Car className="w-6 h-6 text-blue-600" />
         פרטי הנהג
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <label
-            htmlFor="birthDate"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
+          <label htmlFor="birthDate" className={labelClass}>
             <Calendar className="w-4 h-4 inline-block ml-1" />
             תאריך לידה
           </label>
@@ -51,15 +65,12 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
             value={data.birthDate}
             onChange={handleBirthDateChange}
             max={today}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-gray-800 bg-gray-50"
+            className={inputClass}
           />
         </div>
 
         <div>
-          <label
-            htmlFor="licenseDate"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
+          <label htmlFor="licenseDate" className={labelClass}>
             <Calendar className="w-4 h-4 inline-block ml-1" />
             תאריך קבלת רישיון
           </label>
@@ -69,15 +80,12 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
             value={data.licenseDate}
             onChange={handleLicenseDateChange}
             max={today}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-gray-800 bg-gray-50"
+            className={inputClass}
           />
         </div>
 
         <div>
-          <label
-            htmlFor="licenseType"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
+          <label htmlFor="licenseType" className={labelClass}>
             <Car className="w-4 h-4 inline-block ml-1" />
             סוג רישיון
           </label>
@@ -85,7 +93,7 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
             id="licenseType"
             value={data.licenseType}
             onChange={handleLicenseTypeChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-gray-800 bg-gray-50"
+            className={inputClass}
           >
             {LICENSE_TYPES.map((type) => (
               <option key={type.value} value={type.value}>
@@ -99,7 +107,11 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
       <div className="mt-6 flex justify-end">
         <button
           onClick={handleClear}
-          className="flex items-center gap-2 px-4 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+            isDark
+              ? 'text-red-400 hover:text-red-300 hover:bg-red-900/30'
+              : 'text-red-600 hover:text-red-700 hover:bg-red-50'
+          }`}
         >
           <Trash2 className="w-4 h-4" />
           נקה נתונים

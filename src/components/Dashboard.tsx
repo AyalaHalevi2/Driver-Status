@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   User,
   Clock,
@@ -10,13 +11,21 @@ import {
 import type { DriverStatus } from '../types';
 import { StatusCard } from './StatusCard';
 import { ProgressBar } from './ProgressBar';
+import { InfoModal } from './InfoModal';
+import type { InfoModalType } from './InfoModal';
+import { ShareButton } from './ShareButton';
+import { ReminderButton } from './ReminderButton';
 import { formatDaysRemaining } from '../utils/calculations';
+import { useTheme } from '../hooks/useTheme';
 
 interface DashboardProps {
   status: DriverStatus;
 }
 
 export function Dashboard({ status }: DashboardProps) {
+  const { isDark } = useTheme();
+  const [activeModal, setActiveModal] = useState<InfoModalType>(null);
+
   const getAccompanimentLabel = () => {
     switch (status.accompanimentStatus) {
       case 'full':
@@ -52,6 +61,12 @@ export function Dashboard({ status }: DashboardProps) {
 
   return (
     <div className="space-y-6">
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
+        <ShareButton status={status} />
+        <ReminderButton status={status} />
+      </div>
+
       {/* Status Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatusCard
@@ -64,6 +79,7 @@ export function Dashboard({ status }: DashboardProps) {
               ? `נותרו ${formatDaysRemaining(status.daysRemainingNewDriver)}`
               : 'תקופת הנהג החדש הסתיימה'
           }
+          onInfoClick={() => setActiveModal('newDriver')}
         />
 
         <StatusCard
@@ -76,6 +92,7 @@ export function Dashboard({ status }: DashboardProps) {
               ? 'מתחת לגיל 24'
               : 'מעל גיל 24 - אינך נהג צעיר'
           }
+          onInfoClick={() => setActiveModal('youngDriver')}
         />
 
         <StatusCard
@@ -92,6 +109,7 @@ export function Dashboard({ status }: DashboardProps) {
               ? `נותרו ${formatDaysRemaining(status.daysRemainingFullAccompaniment)} למלווה מלא`
               : `נותרו ${formatDaysRemaining(status.daysRemainingNightAccompaniment)} למלווה לילי`
           }
+          onInfoClick={() => setActiveModal('accompaniment')}
         />
 
         <StatusCard
@@ -108,12 +126,17 @@ export function Dashboard({ status }: DashboardProps) {
               ? 'נהג חדש מתחת לגיל 21 - מוגבל ל-2 נוסעים (ללא מלווה)'
               : 'אין הגבלת נוסעים'
           }
+          onInfoClick={() => setActiveModal('passengerLimit')}
         />
       </div>
 
       {/* Progress Bars Section */}
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+      <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${
+        isDark ? 'bg-slate-800' : 'bg-white'
+      }`}>
+        <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 transition-colors ${
+          isDark ? 'text-white' : 'text-gray-800'
+        }`}>
           <AlertCircle className="w-5 h-5 text-blue-600" />
           התקדמות התקופות
         </h3>
@@ -154,9 +177,13 @@ export function Dashboard({ status }: DashboardProps) {
       </div>
 
       {/* Summary Box */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-6 text-white">
+      <div className={`rounded-2xl p-6 text-white transition-colors duration-300 ${
+        isDark
+          ? 'bg-gradient-to-r from-blue-800 to-blue-900'
+          : 'bg-gradient-to-r from-blue-600 to-blue-700'
+      }`}>
         <h3 className="text-lg font-semibold mb-3">סיכום המצב שלך</h3>
-        <ul className="space-y-2 text-blue-100">
+        <ul className={`space-y-2 ${isDark ? 'text-blue-200' : 'text-blue-100'}`}>
           {status.isNewDriver && (
             <li className="flex items-center gap-2">
               <span className="w-2 h-2 bg-blue-300 rounded-full" />
@@ -191,6 +218,9 @@ export function Dashboard({ status }: DashboardProps) {
             )}
         </ul>
       </div>
+
+      {/* Info Modal */}
+      <InfoModal type={activeModal} onClose={() => setActiveModal(null)} />
     </div>
   );
 }
