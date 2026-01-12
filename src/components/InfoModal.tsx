@@ -97,8 +97,22 @@ const modalContents: Record<Exclude<InfoModalType, null>, ModalContent> = {
 export function InfoModal({ type, onClose }: InfoModalProps) {
   const { isDark } = useTheme();
   const modalRef = useRef<HTMLDivElement>(null);
+  const isOpen = type !== null;
 
+  // Handle body scroll lock
   useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  // Handle keyboard and click events
+  useEffect(() => {
+    if (!isOpen) return;
+
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
@@ -111,14 +125,12 @@ export function InfoModal({ type, onClose }: InfoModalProps) {
 
     document.addEventListener('keydown', handleEscape);
     document.addEventListener('mousedown', handleClickOutside);
-    document.body.style.overflow = 'hidden';
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.removeEventListener('mousedown', handleClickOutside);
-      document.body.style.overflow = '';
     };
-  }, [onClose]);
+  }, [isOpen, onClose]);
 
   if (!type) return null;
 
