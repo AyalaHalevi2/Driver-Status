@@ -2,6 +2,7 @@ import { Car, Info, Moon, Sun } from 'lucide-react';
 import { InputForm } from './components/InputForm';
 import { Dashboard } from './components/Dashboard';
 import { Disclaimer } from './components/Disclaimer';
+import { AccessibilityMenu } from './components/AccessibilityMenu';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useDriverStatus } from './hooks/useDriverStatus';
 import { ThemeContext, useThemeState, useTheme } from './hooks/useTheme';
@@ -57,23 +58,28 @@ function AppContent() {
               </div>
             </div>
 
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleTheme}
-              className={`p-2 sm:p-3 rounded-xl transition-all duration-300 ${
-                isDark
-                  ? 'bg-slate-700 hover:bg-slate-600 text-yellow-400'
-                  : 'bg-blue-100 hover:bg-blue-200 text-blue-600'
-              }`}
-              title={isDark ? 'מצב יום' : 'מצב לילה'}
-              aria-label={isDark ? 'מצב יום' : 'מצב לילה'}
-            >
-              {isDark ? (
-                <Sun className="w-5 h-5 sm:w-6 sm:h-6" />
-              ) : (
-                <Moon className="w-5 h-5 sm:w-6 sm:h-6" />
-              )}
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Accessibility Menu */}
+              <AccessibilityMenu />
+
+              {/* Dark Mode Toggle */}
+              <button
+                onClick={toggleTheme}
+                className={`p-2 sm:p-3 rounded-xl transition-all duration-300 ${
+                  isDark
+                    ? 'bg-slate-700 hover:bg-slate-600 text-yellow-400'
+                    : 'bg-blue-100 hover:bg-blue-200 text-blue-600'
+                }`}
+                title={isDark ? 'מצב יום' : 'מצב לילה'}
+                aria-label={isDark ? 'מצב יום' : 'מצב לילה'}
+              >
+                {isDark ? (
+                  <Sun className="w-5 h-5 sm:w-6 sm:h-6" />
+                ) : (
+                  <Moon className="w-5 h-5 sm:w-6 sm:h-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </header>
