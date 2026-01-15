@@ -2,6 +2,7 @@ import { Calendar, Car, Trash2 } from 'lucide-react';
 import type { DriverData, LicenseType } from '../types';
 import { LICENSE_TYPES } from '../utils/constants';
 import { useTheme } from '../hooks/useTheme';
+import { DateInput } from './DateInput';
 import styles from './InputForm.module.scss';
 
 interface InputFormProps {
@@ -13,12 +14,12 @@ interface InputFormProps {
 export function InputForm({ data, onChange, onClear }: InputFormProps) {
   const { isDark } = useTheme();
 
-  const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange({ ...data, birthDate: e.target.value });
+  const handleBirthDateChange = (value: string) => {
+    onChange({ ...data, birthDate: value });
   };
 
-  const handleLicenseDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange({ ...data, licenseDate: e.target.value });
+  const handleLicenseDateChange = (value: string) => {
+    onChange({ ...data, licenseDate: value });
   };
 
   const handleLicenseTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,13 +48,11 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
             <Calendar className={styles.labelIcon} />
             תאריך לידה
           </label>
-          <input
-            type="date"
+          <DateInput
             id="birthDate"
             value={data.birthDate}
             onChange={handleBirthDateChange}
             max={today}
-            className={`${styles.input} ${themeClass}`}
           />
         </div>
 
@@ -62,13 +61,11 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
             <Calendar className={styles.labelIcon} />
             תאריך קבלת רישיון
           </label>
-          <input
-            type="date"
+          <DateInput
             id="licenseDate"
             value={data.licenseDate}
             onChange={handleLicenseDateChange}
             max={today}
-            className={`${styles.input} ${themeClass}`}
           />
         </div>
 
