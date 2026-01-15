@@ -26,44 +26,33 @@ function AppContent() {
   const driverStatus = useDriverStatus(driverData);
 
   const hasValidData = driverData.birthDate && driverData.licenseDate;
+  const themeClass = isDark ? styles.dark : styles.light;
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      isDark
-        ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'
-        : 'bg-gradient-to-br from-blue-50 via-white to-blue-50'
-    }`}>
+    <div className={`${styles.appContainer} ${themeClass}`}>
       {/* Header */}
-      <header className={`shadow-sm border-b transition-colors duration-300 ${
-        isDark
-          ? 'bg-slate-800 border-slate-700'
-          : 'bg-white border-blue-100'
-      }`}>
-        <div className="max-w-5xl mx-auto px-4 py-4 sm:py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-600 rounded-xl">
-                <Car className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+      <header className={`${styles.header} ${themeClass}`}>
+        <div className={styles.headerContent}>
+          <div className={styles.headerInner}>
+            <div className={styles.logoSection}>
+              <div className={styles.logoIcon}>
+                <Car className={styles.carIcon} />
               </div>
-              <div>
-                <h1 className={`text-xl sm:text-2xl md:text-3xl font-bold transition-colors ${
-                  isDark ? 'text-white' : 'text-gray-800'
-                }`}>
+              <div className={styles.titleSection}>
+                <h1 className={`${styles.title} ${themeClass}`}>
                   מתי נגמר המלווה?
                 </h1>
-                <p className={`text-xs sm:text-sm mt-1 transition-colors ${
-                  isDark ? 'text-slate-400' : 'text-gray-500'
-                }`}>
+                <p className={`${styles.subtitle} ${themeClass}`}>
                   מחשבון סטטוס נהג חדש ותקופות מלווה
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className={styles.headerActions}>
               {/* Dark Mode Toggle */}
               <button
                 onClick={toggleTheme}
-                className={`${styles.themeButton} ${isDark ? styles.dark : styles.light}`}
+                className={`${styles.themeButton} ${themeClass}`}
                 title={isDark ? 'מצב יום' : 'מצב לילה'}
                 aria-label={isDark ? 'מצב יום' : 'מצב לילה'}
               >
@@ -82,7 +71,7 @@ function AppContent() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-5xl mx-auto px-4 py-6 sm:py-8">
+      <main className={styles.main}>
         <InputForm
           data={driverData}
           onChange={setDriverData}
@@ -92,22 +81,14 @@ function AppContent() {
         {hasValidData && driverStatus ? (
           <Dashboard status={driverStatus} />
         ) : (
-          <div className={`rounded-2xl shadow-lg p-8 text-center transition-colors duration-300 ${
-            isDark ? 'bg-slate-800' : 'bg-white'
-          }`}>
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
-              isDark ? 'bg-blue-900/50' : 'bg-blue-100'
-            }`}>
-              <Info className="w-8 h-8 text-blue-600" />
+          <div className={`${styles.emptyState} ${themeClass}`}>
+            <div className={`${styles.emptyStateIcon} ${themeClass}`}>
+              <Info className={styles.infoIcon} />
             </div>
-            <h2 className={`text-xl font-semibold mb-2 transition-colors ${
-              isDark ? 'text-white' : 'text-gray-800'
-            }`}>
+            <h2 className={`${styles.emptyStateTitle} ${themeClass}`}>
               הזן את הפרטים שלך
             </h2>
-            <p className={`max-w-md mx-auto transition-colors ${
-              isDark ? 'text-slate-400' : 'text-gray-500'
-            }`}>
+            <p className={`${styles.emptyStateText} ${themeClass}`}>
               הזן את תאריך הלידה ותאריך קבלת הרישיון כדי לראות את הסטטוס שלך
               כנהג חדש, תקופות המלווה והגבלות נוסעים.
             </p>
@@ -117,9 +98,7 @@ function AppContent() {
         <Disclaimer />
 
         {/* Footer */}
-        <footer className={`mt-8 text-center text-sm transition-colors ${
-          isDark ? 'text-slate-500' : 'text-gray-400'
-        }`}>
+        <footer className={`${styles.footer} ${themeClass}`}>
           <p>
             נבנה עם בישראל | מבוסס על חוקי התעבורה הישראליים
           </p>

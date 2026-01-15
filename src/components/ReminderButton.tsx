@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTheme } from '../hooks/useTheme';
 import { useNotification } from '../hooks/useNotification';
 import type { DriverStatus } from '../types';
+import styles from './ReminderButton.module.scss';
 
 interface ReminderButtonProps {
   status: DriverStatus;
@@ -60,10 +61,10 @@ export function ReminderButton({ status }: ReminderButtonProps) {
   };
 
   const getIcon = () => {
-    if (isLoading) return <Bell className="w-4 h-4 animate-pulse" />;
-    if (permission === 'denied') return <BellOff className="w-4 h-4" />;
-    if (reminderActive) return <BellRing className="w-4 h-4" />;
-    return <Bell className="w-4 h-4" />;
+    if (isLoading) return <Bell className={`${styles.icon} ${styles.pulse}`} />;
+    if (permission === 'denied') return <BellOff className={styles.icon} />;
+    if (reminderActive) return <BellRing className={styles.icon} />;
+    return <Bell className={styles.icon} />;
   };
 
   const getLabel = () => {
@@ -72,23 +73,21 @@ export function ReminderButton({ status }: ReminderButtonProps) {
     return 'התראת סיום';
   };
 
+  const getButtonClass = () => {
+    if (permission === 'denied') {
+      return isDark ? styles.disabledDark : styles.disabledLight;
+    }
+    if (reminderActive) {
+      return isDark ? styles.activeDark : styles.activeLight;
+    }
+    return isDark ? styles.defaultDark : styles.defaultLight;
+  };
+
   return (
     <button
       onClick={handleClick}
       disabled={isLoading || permission === 'denied'}
-      className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all duration-300 ${
-        permission === 'denied'
-          ? isDark
-            ? 'bg-slate-700 text-slate-500 cursor-not-allowed'
-            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-          : reminderActive
-          ? isDark
-            ? 'bg-amber-700 hover:bg-amber-600 text-white'
-            : 'bg-amber-500 hover:bg-amber-600 text-white'
-          : isDark
-          ? 'bg-blue-700 hover:bg-blue-600 text-white'
-          : 'bg-blue-500 hover:bg-blue-600 text-white'
-      }`}
+      className={`${styles.button} ${getButtonClass()}`}
       title={
         permission === 'denied'
           ? 'ההתראות חסומות בדפדפן. יש לאפשר התראות בהגדרות הדפדפן'

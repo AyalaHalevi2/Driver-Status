@@ -1,0 +1,174 @@
+.container {
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  &.light {
+    background-color: #ffffff;
+    border-color: var(--gray-100);
+  }
+
+  &.dark {
+    background-color: rgba(51, 65, 85, 0.5);
+    border-color: var(--slate-600);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+
+  &.light {
+    color: var(--gray-700);
+  }
+
+  &.dark {
+    color: var(--slate-300);
+  }
+}
+
+.remaining {
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  &.blue {
+    color: var(--blue-700);
+  }
+
+  &.blueDark {
+    color: var(--blue-400);
+  }
+
+  &.green {
+    color: var(--green-700);
+  }
+
+  &.greenDark {
+    color: #4ade80;
+  }
+
+  &.yellow {
+    color: var(--amber-700);
+  }
+
+  &.yellowDark {
+    color: #fbbf24;
+  }
+
+  &.red {
+    color: var(--red-700);
+  }
+
+  &.redDark {
+    color: #f87171;
+  }
+}
+
+.progressTrack {
+  height: 0.75rem;
+  border-radius: 9999px;
+  overflow: hidden;
+
+  &.blue {
+    background-color: var(--blue-100);
+  }
+
+  &.blueDark {
+    background-color: rgba(30, 58, 138, 0.5);
+  }
+
+  &.green {
+    background-color: var(--green-100);
+  }
+
+  &.greenDark {
+    background-color: rgba(20, 83, 45, 0.5);
+  }
+
+  &.yellow {
+    background-color: var(--amber-100);
+  }
+
+  &.yellowDark {
+    background-color: rgba(120, 53, 15, 0.5);
+  }
+
+  &.red {
+    background-color: var(--red-100);
+  }
+
+  &.redDark {
+    background-color: rgba(127, 29, 29, 0.5);
+  }
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.5s ease-out;
+
+  &.blue {
+    background-color: var(--blue-500);
+  }
+
+  &.green {
+    background-color: var(--green-500);
+  }
+
+  &.yellow {
+    background-color: var(--amber-500);
+  }
+
+  &.red {
+    background-color: var(--red-500);
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  transition: color 0.3s ease;
+
+  &.light {
+    color: var(--gray-500);
+  }
+
+  &.dark {
+    color: var(--slate-400);
+  }
+}
+
+.footerIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.completedText {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &.light {
+    color: var(--green-600);
+  }
+
+  &.dark {
+    color: #4ade80;
+  }
+}

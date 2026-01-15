@@ -17,6 +17,7 @@ import { ShareButton } from './ShareButton';
 import { ReminderButton } from './ReminderButton';
 import { formatDaysRemaining } from '../utils/calculations';
 import { useTheme } from '../hooks/useTheme';
+import styles from './Dashboard.module.scss';
 
 interface DashboardProps {
   status: DriverStatus;
@@ -40,11 +41,11 @@ export function Dashboard({ status }: DashboardProps) {
   const getAccompanimentIcon = () => {
     switch (status.accompanimentStatus) {
       case 'full':
-        return <Sun className="w-5 h-5" />;
+        return <Sun className={styles.icon} />;
       case 'night':
-        return <Moon className="w-5 h-5" />;
+        return <Moon className={styles.icon} />;
       case 'none':
-        return <CheckCircle className="w-5 h-5" />;
+        return <CheckCircle className={styles.icon} />;
     }
   };
 
@@ -60,19 +61,19 @@ export function Dashboard({ status }: DashboardProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       {/* Action Buttons */}
-      <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
+      <div className={styles.actionButtons}>
         <ShareButton status={status} />
         <ReminderButton status={status} />
       </div>
 
       {/* Status Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className={styles.statusGrid}>
         <StatusCard
           title="נהג חדש"
           value={status.isNewDriver ? 'פעיל' : 'הסתיים'}
-          icon={<Clock className="w-5 h-5" />}
+          icon={<Clock className={styles.icon} />}
           status={status.isNewDriver ? 'active' : 'inactive'}
           details={
             status.isNewDriver
@@ -85,7 +86,7 @@ export function Dashboard({ status }: DashboardProps) {
         <StatusCard
           title="נהג צעיר"
           value={status.isYoungDriver ? `גיל ${status.age}` : `גיל ${status.age}`}
-          icon={<User className="w-5 h-5" />}
+          icon={<User className={styles.icon} />}
           status={status.isYoungDriver ? 'warning' : 'inactive'}
           details={
             status.isYoungDriver
@@ -119,7 +120,7 @@ export function Dashboard({ status }: DashboardProps) {
               ? `עד ${status.passengerLimit} נוסעים`
               : 'ללא הגבלה'
           }
-          icon={<Users className="w-5 h-5" />}
+          icon={<Users className={styles.icon} />}
           status={status.hasPassengerLimit ? 'warning' : 'inactive'}
           details={
             status.hasPassengerLimit
@@ -131,17 +132,13 @@ export function Dashboard({ status }: DashboardProps) {
       </div>
 
       {/* Progress Bars Section */}
-      <div className={`rounded-2xl shadow-lg p-6 transition-colors duration-300 ${
-        isDark ? 'bg-slate-800' : 'bg-white'
-      }`}>
-        <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 transition-colors ${
-          isDark ? 'text-white' : 'text-gray-800'
-        }`}>
-          <AlertCircle className="w-5 h-5 text-blue-600" />
+      <div className={`${styles.progressSection} ${isDark ? styles.dark : styles.light}`}>
+        <h3 className={`${styles.progressTitle} ${isDark ? styles.dark : styles.light}`}>
+          <AlertCircle className={styles.progressTitleIcon} />
           התקדמות התקופות
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className={styles.progressGrid}>
           <ProgressBar
             label="תקופת נהג חדש"
             progress={status.newDriverProgress}
@@ -177,42 +174,38 @@ export function Dashboard({ status }: DashboardProps) {
       </div>
 
       {/* Summary Box */}
-      <div className={`rounded-2xl p-6 text-white transition-colors duration-300 ${
-        isDark
-          ? 'bg-gradient-to-r from-blue-800 to-blue-900'
-          : 'bg-gradient-to-r from-blue-600 to-blue-700'
-      }`}>
-        <h3 className="text-lg font-semibold mb-3">סיכום המצב שלך</h3>
-        <ul className={`space-y-2 ${isDark ? 'text-blue-200' : 'text-blue-100'}`}>
+      <div className={`${styles.summaryBox} ${isDark ? styles.dark : styles.light}`}>
+        <h3 className={styles.summaryTitle}>סיכום המצב שלך</h3>
+        <ul className={`${styles.summaryList} ${isDark ? styles.dark : styles.light}`}>
           {status.isNewDriver && (
-            <li className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-300 rounded-full" />
+            <li className={styles.summaryItem}>
+              <span className={`${styles.summaryDot} ${styles.blue}`} />
               אתה נהג חדש - יש לנהוג בזהירות יתרה ולציית לכל הכללים
             </li>
           )}
           {status.accompanimentStatus === 'full' && (
-            <li className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-yellow-300 rounded-full" />
+            <li className={styles.summaryItem}>
+              <span className={`${styles.summaryDot} ${styles.yellow}`} />
               חובת מלווה מלא - יש להיות מלווה בכל נסיעה (יום ולילה)
             </li>
           )}
           {status.accompanimentStatus === 'night' && (
-            <li className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-yellow-300 rounded-full" />
+            <li className={styles.summaryItem}>
+              <span className={`${styles.summaryDot} ${styles.yellow}`} />
               חובת מלווה לילי - יש להיות מלווה בשעות 21:00-06:00
             </li>
           )}
           {status.hasPassengerLimit && (
-            <li className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-orange-300 rounded-full" />
+            <li className={styles.summaryItem}>
+              <span className={`${styles.summaryDot} ${styles.orange}`} />
               הגבלת נוסעים - מותר להסיע עד 2 נוסעים בלבד (ללא נוכחות מלווה)
             </li>
           )}
           {!status.isNewDriver &&
             status.accompanimentStatus === 'none' &&
             !status.hasPassengerLimit && (
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-green-300 rounded-full" />
+              <li className={styles.summaryItem}>
+                <span className={`${styles.summaryDot} ${styles.green}`} />
                 כל ההגבלות הוסרו - נהיגה בטוחה!
               </li>
             )}

@@ -2,6 +2,7 @@ import { Calendar, Car, Trash2 } from 'lucide-react';
 import type { DriverData, LicenseType } from '../types';
 import { LICENSE_TYPES } from '../utils/constants';
 import { useTheme } from '../hooks/useTheme';
+import styles from './InputForm.module.scss';
 
 interface InputFormProps {
   data: DriverData;
@@ -31,32 +32,19 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
   };
 
   const today = new Date().toISOString().split('T')[0];
-
-  const inputClass = `w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-    isDark
-      ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
-      : 'bg-gray-50 border-gray-300 text-gray-800'
-  }`;
-
-  const labelClass = `block text-sm font-medium mb-2 transition-colors ${
-    isDark ? 'text-slate-300' : 'text-gray-700'
-  }`;
+  const themeClass = isDark ? styles.dark : styles.light;
 
   return (
-    <div className={`rounded-2xl shadow-lg p-6 mb-6 transition-colors duration-300 ${
-      isDark ? 'bg-slate-800' : 'bg-white'
-    }`}>
-      <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 transition-colors ${
-        isDark ? 'text-white' : 'text-gray-800'
-      }`}>
-        <Car className="w-6 h-6 text-blue-600" />
+    <div className={`${styles.container} ${themeClass}`}>
+      <h2 className={`${styles.title} ${themeClass}`}>
+        <Car className={styles.titleIcon} />
         פרטי הנהג
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <label htmlFor="birthDate" className={labelClass}>
-            <Calendar className="w-4 h-4 inline-block ml-1" />
+      <div className={styles.formGrid}>
+        <div className={styles.formGroup}>
+          <label htmlFor="birthDate" className={`${styles.label} ${themeClass}`}>
+            <Calendar className={styles.labelIcon} />
             תאריך לידה
           </label>
           <input
@@ -65,13 +53,13 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
             value={data.birthDate}
             onChange={handleBirthDateChange}
             max={today}
-            className={inputClass}
+            className={`${styles.input} ${themeClass}`}
           />
         </div>
 
-        <div>
-          <label htmlFor="licenseDate" className={labelClass}>
-            <Calendar className="w-4 h-4 inline-block ml-1" />
+        <div className={styles.formGroup}>
+          <label htmlFor="licenseDate" className={`${styles.label} ${themeClass}`}>
+            <Calendar className={styles.labelIcon} />
             תאריך קבלת רישיון
           </label>
           <input
@@ -80,20 +68,20 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
             value={data.licenseDate}
             onChange={handleLicenseDateChange}
             max={today}
-            className={inputClass}
+            className={`${styles.input} ${themeClass}`}
           />
         </div>
 
-        <div>
-          <label htmlFor="licenseType" className={labelClass}>
-            <Car className="w-4 h-4 inline-block ml-1" />
+        <div className={styles.formGroup}>
+          <label htmlFor="licenseType" className={`${styles.label} ${themeClass}`}>
+            <Car className={styles.labelIcon} />
             סוג רישיון
           </label>
           <select
             id="licenseType"
             value={data.licenseType}
             onChange={handleLicenseTypeChange}
-            className={inputClass}
+            className={`${styles.input} ${themeClass}`}
           >
             {LICENSE_TYPES.map((type) => (
               <option key={type.value} value={type.value}>
@@ -104,16 +92,12 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
         </div>
       </div>
 
-      <div className="mt-6 flex justify-end">
+      <div className={styles.clearButtonContainer}>
         <button
           onClick={handleClear}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-            isDark
-              ? 'text-red-400 hover:text-red-300 hover:bg-red-900/30'
-              : 'text-red-600 hover:text-red-700 hover:bg-red-50'
-          }`}
+          className={`${styles.clearButton} ${themeClass}`}
         >
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className={styles.clearButtonIcon} />
           נקה נתונים
         </button>
       </div>

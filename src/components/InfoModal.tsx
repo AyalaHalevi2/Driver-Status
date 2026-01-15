@@ -1,6 +1,7 @@
 import { X, ExternalLink } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTheme } from '../hooks/useTheme';
+import styles from './InfoModal.module.scss';
 
 export type InfoModalType = 'newDriver' | 'youngDriver' | 'accompaniment' | 'passengerLimit' | null;
 
@@ -24,7 +25,7 @@ const modalContents: Record<Exclude<InfoModalType, null>, ModalContent> = {
       'תקופת נהג חדש נמשכת שנתיים (24 חודשים) מיום קבלת הרישיון',
       'במהלך תקופה זו יש לנהוג בזהירות יתרה',
       'חובה להצמיד תווית "נ" (נהג חדש) על הרכב',
-      'עבירות תנועה עלולות לגרום להארכת תקופת הנהג החדש',
+      'עבירות תנועה עלולות לגרור להארכת תקופת הנהג החדש',
       'צבירת נקודות עלולה להביא לפסילת רישיון',
     ],
     links: [
@@ -98,6 +99,7 @@ export function InfoModal({ type, onClose }: InfoModalProps) {
   const { isDark } = useTheme();
   const modalRef = useRef<HTMLDivElement>(null);
   const isOpen = type !== null;
+  const themeClass = isDark ? styles.dark : styles.light;
 
   // Handle body scroll lock
   useEffect(() => {
@@ -137,54 +139,42 @@ export function InfoModal({ type, onClose }: InfoModalProps) {
   const content = modalContents[type];
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop ${
-      isDark ? 'bg-black/70' : 'bg-black/50'
-    }`}>
+    <div className={`${styles.backdrop} ${themeClass} modal-backdrop`}>
       <div
         ref={modalRef}
-        className={`modal-content w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl ${
-          isDark ? 'bg-slate-800' : 'bg-white'
-        }`}
+        className={`${styles.modal} ${themeClass} modal-content`}
       >
         {/* Header */}
-        <div className={`sticky top-0 flex items-center justify-between p-4 border-b ${
-          isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'
-        }`}>
-          <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>
+        <div className={`${styles.header} ${themeClass}`}>
+          <h2 className={`${styles.title} ${themeClass}`}>
             {content.title}
           </h2>
           <button
             onClick={onClose}
-            className={`p-2 rounded-lg transition-colors ${
-              isDark
-                ? 'hover:bg-slate-700 text-slate-400 hover:text-white'
-                : 'hover:bg-gray-100 text-gray-500 hover:text-gray-700'
-            }`}
+            className={`${styles.closeButton} ${themeClass}`}
             aria-label="סגור"
           >
-            <X className="w-5 h-5" />
+            <X className={styles.closeIcon} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-4 space-y-4">
+        <div className={styles.content}>
           {/* Description */}
-          <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-300' : 'text-gray-600'}`}>
+          <p className={`${styles.description} ${themeClass}`}>
             {content.description}
           </p>
 
           {/* Details List */}
-          <div className={`rounded-xl p-4 ${isDark ? 'bg-slate-700/50' : 'bg-blue-50'}`}>
-            <h3 className={`text-sm font-semibold mb-3 ${isDark ? 'text-blue-400' : 'text-blue-700'}`}>
+          <div className={`${styles.detailsBox} ${themeClass}`}>
+            <h3 className={`${styles.detailsTitle} ${themeClass}`}>
               פרטים חשובים:
             </h3>
-            <ul className="space-y-2">
+            <ul className={styles.detailsList}>
               {content.details.map((detail, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                    isDark ? 'bg-blue-400' : 'bg-blue-500'
-                  }`} />
-                  <span className={`text-sm ${isDark ? 'text-slate-300' : 'text-gray-700'}`}>
+                <li key={index} className={styles.detailItem}>
+                  <span className={`${styles.detailDot} ${themeClass}`} />
+                  <span className={`${styles.detailText} ${themeClass}`}>
                     {detail}
                   </span>
                 </li>
@@ -193,8 +183,8 @@ export function InfoModal({ type, onClose }: InfoModalProps) {
           </div>
 
           {/* External Links */}
-          <div className="space-y-2">
-            <h3 className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-gray-700'}`}>
+          <div className={styles.linksSection}>
+            <h3 className={`${styles.linksTitle} ${themeClass}`}>
               קישורים רשמיים:
             </h3>
             {content.links.map((link, index) => (
@@ -203,28 +193,20 @@ export function InfoModal({ type, onClose }: InfoModalProps) {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center gap-2 p-3 rounded-xl transition-all ${
-                  isDark
-                    ? 'bg-blue-900/30 hover:bg-blue-900/50 text-blue-400 hover:text-blue-300'
-                    : 'bg-blue-100 hover:bg-blue-200 text-blue-700 hover:text-blue-800'
-                }`}
+                className={`${styles.link} ${themeClass}`}
               >
-                <ExternalLink className="w-4 h-4 flex-shrink-0" />
-                <span className="text-sm font-medium">{link.label}</span>
+                <ExternalLink className={styles.linkIcon} />
+                <span className={styles.linkText}>{link.label}</span>
               </a>
             ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div className={`p-4 border-t ${isDark ? 'border-slate-700' : 'border-gray-200'}`}>
+        <div className={`${styles.footer} ${themeClass}`}>
           <button
             onClick={onClose}
-            className={`w-full py-2.5 rounded-xl font-medium transition-colors ${
-              isDark
-                ? 'bg-slate-700 hover:bg-slate-600 text-white'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-            }`}
+            className={`${styles.footerButton} ${themeClass}`}
           >
             סגור
           </button>

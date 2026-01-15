@@ -2,6 +2,7 @@ import { Share2 } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import type { DriverStatus } from '../types';
 import { formatDaysRemaining } from '../utils/calculations';
+import styles from './ShareButton.module.scss';
 
 interface ShareButtonProps {
   status: DriverStatus;
@@ -40,13 +41,9 @@ export function ShareButton({ status }: ShareButtonProps) {
   return (
     <button
       onClick={handleShare}
-      className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all duration-300 ${
-        isDark
-          ? 'bg-green-700 hover:bg-green-600 text-white'
-          : 'bg-green-500 hover:bg-green-600 text-white'
-      }`}
+      className={`${styles.button} ${isDark ? styles.dark : styles.light}`}
     >
-      <Share2 className="w-4 h-4" />
+      <Share2 className={styles.icon} />
       <span>שתף סטטוס</span>
     </button>
   );
