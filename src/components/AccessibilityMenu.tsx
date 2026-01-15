@@ -180,7 +180,7 @@ export function AccessibilityMenu() {
                 title="איפוס הגדרות"
                 aria-label="איפוס כל הגדרות הנגישות"
               >
-                <RotateCcw size={12} style={{ display: 'inline', marginLeft: '4px' }} />
+                <RotateCcw size={12} className={styles.resetIcon} />
                 איפוס
               </button>
             </div>
@@ -221,7 +221,7 @@ export function AccessibilityMenu() {
                       {isActive ? (
                         <Check className={styles.checkIcon} />
                       ) : (
-                        <X className={styles.checkIcon} style={{ opacity: 0 }} />
+                        <X className={`${styles.checkIcon} ${styles.hidden}`} />
                       )}
                     </div>
                   </button>

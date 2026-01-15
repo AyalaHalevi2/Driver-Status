@@ -303,6 +303,15 @@
 .checkIcon {
   width: 0.75rem;
   height: 0.75rem;
+
+  &.hidden {
+    opacity: 0;
+  }
+}
+
+.resetIcon {
+  display: inline;
+  margin-left: 4px;
 }
 
 // Global accessibility styles

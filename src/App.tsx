@@ -8,6 +8,7 @@ import { useDriverStatus } from './hooks/useDriverStatus';
 import { ThemeContext, useThemeState, useTheme } from './hooks/useTheme';
 import { STORAGE_KEY } from './utils/constants';
 import type { DriverData } from './types';
+import styles from './App.module.scss';
 
 const initialData: DriverData = {
   birthDate: '',
@@ -59,26 +60,22 @@ function AppContent() {
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Accessibility Menu */}
-              <AccessibilityMenu />
-
               {/* Dark Mode Toggle */}
               <button
                 onClick={toggleTheme}
-                className={`p-2 sm:p-3 rounded-xl transition-all duration-300 ${
-                  isDark
-                    ? 'bg-slate-700 hover:bg-slate-600 text-yellow-400'
-                    : 'bg-blue-100 hover:bg-blue-200 text-blue-600'
-                }`}
+                className={`${styles.themeButton} ${isDark ? styles.dark : styles.light}`}
                 title={isDark ? 'מצב יום' : 'מצב לילה'}
                 aria-label={isDark ? 'מצב יום' : 'מצב לילה'}
               >
                 {isDark ? (
-                  <Sun className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <Sun className={styles.themeIcon} />
                 ) : (
-                  <Moon className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <Moon className={styles.themeIcon} />
                 )}
               </button>
+
+              {/* Accessibility Menu */}
+              <AccessibilityMenu />
             </div>
           </div>
         </div>
