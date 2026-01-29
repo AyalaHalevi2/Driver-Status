@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useTheme } from '../hooks/useTheme';
 import styles from './DateInput.module.scss';
 
@@ -51,8 +51,20 @@ export function DateInput({ id, value, onChange, max, className }: DateInputProp
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const themeClass = isDark ? styles.dark : styles.light;
 
+  // Track the display value separately to allow partial input while typing
+  const [displayValue, setDisplayValue] = useState(() => isoToDisplay(value));
+  const [isTyping, setIsTyping] = useState(false);
+
+  // Sync display value with prop value when not actively typing
+  useEffect(() => {
+    if (!isTyping) {
+      setDisplayValue(isoToDisplay(value));
+    }
+  }, [value, isTyping]);
+
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value;
+    setIsTyping(true);
 
     // Remove non-numeric and non-slash characters
     input = input.replace(/[^\d/]/g, '');
@@ -74,19 +86,32 @@ export function DateInput({ id, value, onChange, max, className }: DateInputProp
       input = input.slice(0, 10);
     }
 
+    // Update display value to show what user is typing
+    setDisplayValue(input);
+
     // If it's a complete valid date, convert to ISO and call onChange
     if (input.length === 10 && isValidDisplayDate(input)) {
-      onChange(displayToIso(input));
-    } else if (input.length < 10 || !isValidDisplayDate(input)) {
-      // Store the partial/invalid input temporarily via a data attribute
-      e.target.dataset.partial = input;
+      const isoDate = displayToIso(input);
+      // Check max constraint if provided
+      if (!max || isoDate <= max) {
+        onChange(isoDate);
+      }
     }
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    if (input.length === 10 && isValidDisplayDate(input)) {
-      onChange(displayToIso(input));
+  const handleBlur = () => {
+    setIsTyping(false);
+    // On blur, if the date is valid, apply it; otherwise revert to the prop value
+    if (displayValue.length === 10 && isValidDisplayDate(displayValue)) {
+      const isoDate = displayToIso(displayValue);
+      if (!max || isoDate <= max) {
+        onChange(isoDate);
+      } else {
+        setDisplayValue(isoToDisplay(value));
+      }
+    } else {
+      // Revert to the current valid value
+      setDisplayValue(isoToDisplay(value));
     }
   };
 
@@ -95,6 +120,7 @@ export function DateInput({ id, value, onChange, max, className }: DateInputProp
   };
 
   const handleHiddenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsTyping(false);
     onChange(e.target.value);
   };
 
@@ -103,7 +129,7 @@ export function DateInput({ id, value, onChange, max, className }: DateInputProp
       <input
         type="text"
         id={id}
-        value={isoToDisplay(value)}
+        value={displayValue}
         onChange={handleTextChange}
         onBlur={handleBlur}
         placeholder="dd/mm/yyyy"
