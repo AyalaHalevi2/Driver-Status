@@ -40,10 +40,10 @@ function AppContent() {
               </div>
               <div className={styles.titleSection}>
                 <h1 className={`${styles.title} ${themeClass}`}>
-                  מתי נגמר המלווה?
+                  סטטוס הנהיגה שלי
                 </h1>
                 <p className={`${styles.subtitle} ${themeClass}`}>
-                  מחשבון סטטוס נהג חדש ותקופות מלווה
+                  מחשבון נהג חדש | מלווה | הגבלות נוסעים
                 </p>
               </div>
             </div>

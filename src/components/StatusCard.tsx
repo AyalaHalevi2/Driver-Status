@@ -1,4 +1,3 @@
-import { Info } from 'lucide-react';
 import type { StatusCardProps } from '../types';
 import { useTheme } from '../hooks/useTheme';
 import styles from './StatusCard.module.scss';
@@ -22,12 +21,6 @@ export function StatusCard({ title, value, icon, status, details, onInfoClick }:
     return isDark ? styles.inactiveDark : styles.inactiveLight;
   };
 
-  const getInfoButtonClass = () => {
-    if (status === 'active') return isDark ? styles.activeDark : styles.activeLight;
-    if (status === 'warning') return isDark ? styles.warningDark : styles.warningLight;
-    return isDark ? styles.inactiveDark : styles.inactiveLight;
-  };
-
   const getBadgeClass = () => {
     if (status === 'active') return isDark ? styles.activeDark : styles.active;
     if (status === 'warning') return isDark ? styles.warningDark : styles.warning;
@@ -46,23 +39,33 @@ export function StatusCard({ title, value, icon, status, details, onInfoClick }:
     return isDark ? styles.inactiveDark : styles.inactiveLight;
   };
 
+  const handleCardClick = () => {
+    if (onInfoClick) {
+      onInfoClick();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (onInfoClick && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      onInfoClick();
+    }
+  };
+
   return (
-    <div className={`${styles.card} ${getCardClass()}`}>
+    <div
+      className={`${styles.card} ${getCardClass()} ${onInfoClick ? styles.clickable : ''}`}
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+      role={onInfoClick ? 'button' : undefined}
+      tabIndex={onInfoClick ? 0 : undefined}
+      aria-label={onInfoClick ? `${title} - לחץ למידע נוסף` : undefined}
+    >
       <div className={styles.header}>
         <div className={`${styles.iconWrapper} ${getIconWrapperClass()}`}>
           {icon}
         </div>
         <div className={styles.actions}>
-          {onInfoClick && (
-            <button
-              onClick={onInfoClick}
-              className={`${styles.infoButton} ${getInfoButtonClass()}`}
-              title="מידע נוסף"
-              aria-label="מידע נוסף"
-            >
-              <Info className={styles.infoIcon} />
-            </button>
-          )}
           <span className={`${styles.badge} ${getBadgeClass()}`}>
             {status === 'active' ? 'פעיל' : status === 'warning' ? 'תקף' : 'לא פעיל'}
           </span>
