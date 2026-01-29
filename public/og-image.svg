@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Car Icon -->
+  <g transform="translate(500, 180)" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M190 170h20c6 0 10-4 10-10v-30c0-9-7-17-15-19C185 106 160 100 160 100s-13-14-22-23c-5-4-11-7-18-7H50c-6 0-11 4-14 9l-14 29A37 37 0 0 0 20 120v40c0 6 4 10 10 10h20"/>
+    <circle cx="70" cy="170" r="20"/>
+    <path d="M90 170h60"/>
+    <circle cx="170" cy="170" r="20"/>
+  </g>
+
+  <!-- Hebrew Text -->
+  <text x="600" y="420" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle" direction="rtl">
+    סטטוס הנהיגה שלי
+  </text>
+
+  <text x="600" y="500" font-family="Arial, sans-serif" font-size="36" fill="rgba(255,255,255,0.9)" text-anchor="middle" direction="rtl">
+    מחשבון נהג חדש ומלווה
+  </text>
+
+  <!-- Decorative elements -->
+  <circle cx="100" cy="100" r="50" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1100" cy="530" r="80" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1050" cy="100" r="30" fill="rgba(255,255,255,0.05)"/>
+</svg>

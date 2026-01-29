@@ -1,4 +1,27 @@
+# Robots.txt for סטטוס הנהיגה שלי
+
+# Allow all search engines
 User-agent: *
 Allow: /
 
+# Disallow build artifacts
+Disallow: /assets/*.map
+
+# Crawl delay for politeness
+Crawl-delay: 1
+
+# Specific bot permissions
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+# Sitemap location
 Sitemap: https://driver-status.onrender.com/sitemap.xml
+
+# Host directive for canonical domain
+Host: https://driver-status.onrender.com

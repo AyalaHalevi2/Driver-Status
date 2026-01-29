@@ -110,6 +110,8 @@
 
 html {
   scroll-behavior: smooth;
+  // Performance: Enable hardware acceleration for scroll
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -118,6 +120,27 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   direction: rtl;
+  // Performance: Optimize text rendering
+  text-rendering: optimizeSpeed;
+  // Performance: Contain layout calculations
+  contain: layout style;
+}
+
+// Performance: Optimize images and icons
+img, svg {
+  content-visibility: auto;
+}
+
+// Performance: Reduce motion for accessibility and performance
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
