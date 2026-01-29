@@ -14,6 +14,7 @@ type ReminderType = 'fullAccompaniment' | 'nightAccompaniment' | 'newDriver';
 export function ReminderButton({ status }: ReminderButtonProps) {
   const { isDark } = useTheme();
   const { scheduleReminder, cancelReminder, hasReminder, isSupported, permission } = useNotification();
+  const [showTooltip, setShowTooltip] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const getActiveReminder = (): { type: ReminderType; date: Date; label: string } | null => {
@@ -83,21 +84,37 @@ export function ReminderButton({ status }: ReminderButtonProps) {
     return isDark ? styles.defaultDark : styles.defaultLight;
   };
 
+  const isDenied = permission === 'denied';
+
   return (
-    <button
-      onClick={handleClick}
-      disabled={isLoading || permission === 'denied'}
-      className={`${styles.button} ${getButtonClass()}`}
-      title={
-        permission === 'denied'
-          ? 'ההתראות חסומות בדפדפן. יש לאפשר התראות בהגדרות הדפדפן'
-          : reminderActive
-          ? 'לחץ לביטול ההתראה'
-          : 'לחץ להגדרת תזכורת ליום סיום התקופה'
-      }
+    <div
+      className={styles.container}
+      onMouseEnter={() => isDenied && setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
     >
-      {getIcon()}
-      <span>{getLabel()}</span>
-    </button>
+      <button
+        onClick={handleClick}
+        disabled={isLoading || isDenied}
+        className={`${styles.button} ${getButtonClass()}`}
+        title={
+          isDenied
+            ? undefined
+            : reminderActive
+            ? 'לחץ לביטול ההתראה'
+            : 'לחץ להגדרת תזכורת ליום סיום התקופה'
+        }
+      >
+        {getIcon()}
+        <span>{getLabel()}</span>
+      </button>
+      {isDenied && showTooltip && (
+        <div className={`${styles.tooltip} ${isDark ? styles.tooltipDark : styles.tooltipLight}`}>
+          <p>ההתראות חסומות בדפדפן</p>
+          <p className={styles.tooltipInstructions}>
+            לחץ על סמל המידע בשורת הכתובת ואפשר התראות לאתר זה
+          </p>
+        </div>
+      )}
+    </div>
   );
 }

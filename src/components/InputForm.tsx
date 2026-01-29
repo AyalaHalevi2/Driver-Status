@@ -59,7 +59,11 @@ export function InputForm({ data, onChange, onClear }: InputFormProps) {
         <div className={styles.formGroup}>
           <label htmlFor="licenseDate" className={`${styles.label} ${themeClass}`}>
             <Calendar className={styles.labelIcon} />
-            תאריך קבלת רישיון
+            <span>
+              תאריך קבלת היתר נהיגה
+              <br />
+              <small>(בדרך כלל יום או יומים אחרי מעבר הטסט המעשי)</small>
+            </span>
           </label>
           <DateInput
             id="licenseDate"
